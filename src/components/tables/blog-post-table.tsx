@@ -36,66 +36,19 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+import { Post, samplePosts } from '@/lib/sample-data'
 
-export type Post = {
-  id: string
-  title: string
-  slug: string
-  author: string
-  publishDate: string
-  status: 'published' | 'draft' | 'archived'
-  category: string
+const SortableHeader = ({ column, title }: { column: any; title: string }) => {
+  return (
+    <Button
+      variant="ghost"
+      onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    >
+      {title}
+      <ArrowUpDown className="ml-2 h-4 w-4" />
+    </Button>
+  )
 }
-
-export const samplePosts: Post[] = [
-  {
-    id: '1',
-    title: 'Getting Started with Next.js',
-    slug: 'getting-started-with-nextjs',
-    author: 'John Doe',
-    publishDate: '2023-06-01',
-    status: 'published',
-    category: 'Web Development',
-  },
-  {
-    id: '2',
-    title: 'Mastering React Hooks',
-    slug: 'mastering-react-hooks',
-    author: 'Jane Smith',
-    publishDate: '2023-06-15',
-    status: 'published',
-    category: 'React',
-  },
-  {
-    id: '3',
-    title: 'CSS Grid Layout Techniques',
-    slug: 'css-grid-layout-techniques',
-    author: 'Alice Johnson',
-    publishDate: '2023-06-20',
-    status: 'draft',
-    category: 'CSS',
-  },
-  {
-    id: '4',
-    title: 'TypeScript Best Practices',
-    slug: 'typescript-best-practices',
-    author: 'Bob Williams',
-    publishDate: '2023-07-01',
-    status: 'archived',
-    category: 'TypeScript',
-  },
-  {
-    id: '5',
-    title: 'Building Scalable APIs with Node.js',
-    slug: 'building-scalable-apis-with-nodejs',
-    author: 'Charlie Brown',
-    publishDate: '2023-07-10',
-    status: 'published',
-    category: 'Backend',
-  },
-]
-
-
 
 export const columns: ColumnDef<Post>[] = [
   {
@@ -119,44 +72,39 @@ export const columns: ColumnDef<Post>[] = [
   },
   {
     accessorKey: 'title',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Title
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    header: ({ column }) => <SortableHeader column={column} title="Title" />,
     cell: ({ row }) => <div className="lowercase">{row.getValue('title')}</div>,
   },
   {
     accessorKey: 'slug',
-    header: 'Slug',
+    header: ({ column }) => <SortableHeader column={column} title="Slug" />,
     cell: ({ row }) => <div className="lowercase">{row.getValue('slug')}</div>,
   },
   {
     accessorKey: 'author',
-    header: 'Author',
+    header: ({ column }) => <SortableHeader column={column} title="Author" />,
     cell: ({ row }) => <div>{row.getValue('author')}</div>,
   },
   {
+    accessorKey: 'createdAt',
+    header: ({ column }) => <SortableHeader column={column} title="Created At" />,
+    cell: ({ row }) => <div>{row.getValue('createdAt')}</div>,
+  },
+  {
     accessorKey: 'publishDate',
-    header: 'Publish Date',
+    header: ({ column }) => <SortableHeader column={column} title="Publish Date" />,
     cell: ({ row }) => <div>{row.getValue('publishDate')}</div>,
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: ({ column }) => <SortableHeader column={column} title="Status" />,
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue('status')}</div>
     ),
   },
   {
     accessorKey: 'category',
-    header: 'Category',
+    header: ({ column }) => <SortableHeader column={column} title="Category" />,
     cell: ({ row }) => <div>{row.getValue('category')}</div>,
   },
   {
